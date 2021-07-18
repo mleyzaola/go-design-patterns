@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type TransmissionType int
 
@@ -35,8 +38,17 @@ type Car struct {
 }
 
 func (c *Car) String() string {
-	return fmt.Sprintf("brand: %s color: %s serial: %s transmission: %s",
-		c.options.brand, c.options.color, c.serialNumber, c.options.transmission)
+	var values []string
+	if val := c.options.brand; val != "" {
+		values = append(values, val)
+	}
+	if val := c.options.color; val != "" {
+		values = append(values, val)
+	}
+	if val := c.options.transmission; val != TransmissionUndefined {
+		values = append(values, val.String())
+	}
+	return strings.Join(values, " ")
 }
 
 // NewCar implements variable number of options as parameters
