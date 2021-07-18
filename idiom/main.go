@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -27,6 +28,7 @@ const (
 type CarOptions struct {
 	brand        string
 	color        string
+	maxSpeed     float64
 	transmission TransmissionType
 }
 
@@ -47,6 +49,9 @@ func (c *Car) String() string {
 	}
 	if val := c.options.transmission; val != TransmissionUndefined {
 		values = append(values, val.String())
+	}
+	if val := c.options.maxSpeed; val != 0 {
+		values = append(values, strconv.FormatFloat(val, 'f', 0, 64))
 	}
 	return strings.Join(values, " ")
 }
@@ -81,6 +86,12 @@ func WithTransmissionType(tt TransmissionType) CarOption {
 	}
 }
 
+func WithMaxSpeed(maxSpeed float64) CarOption {
+	return func(o *CarOptions) {
+		o.maxSpeed = maxSpeed
+	}
+}
+
 func main() {
 	car := NewCar("123")
 	fmt.Println(car)
@@ -95,6 +106,7 @@ func main() {
 		WithBrand("BMW"),
 		WithColor("Red"),
 		WithTransmissionType(TransmissionAutomatic),
+		WithMaxSpeed(330),
 	)
 	fmt.Println(car)
 }
