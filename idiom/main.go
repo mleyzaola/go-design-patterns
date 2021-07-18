@@ -92,6 +92,7 @@ func WithMaxSpeed(maxSpeed float64) CarOption {
 	}
 }
 
+// TODO: let the audience implement maxSpeedUnit of type Unit and support Km and Mi
 func main() {
 	car := NewCar("123")
 	fmt.Println(car)
