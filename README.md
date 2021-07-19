@@ -13,4 +13,5 @@ This pattern is a bit harder to understand, so there are different versions of t
   02-implement-functional-options
   03-car-to-string-function
   04-extending-options-max-speed
+  05-solution-to-speed-type-trivia
 ```
