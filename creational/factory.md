@@ -28,7 +28,7 @@ package data
 type StorageType int
 
 const (
-    DiskStorage StorageType = 1 << iota
+    DiskStorage StorageType = iota
     TempStorage
     MemoryStorage
 )
