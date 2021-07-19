@@ -6,7 +6,15 @@ import (
 	"strings"
 )
 
-type TransmissionType int
+type (
+	TransmissionType int
+	SpeedUnitType    int
+)
+
+const (
+	KmUnit SpeedUnitType = iota + 1
+	MiUnit
+)
 
 func (tt TransmissionType) String() string {
 	switch tt {
@@ -14,6 +22,17 @@ func (tt TransmissionType) String() string {
 		return "Automatic"
 	case TransmissionManual:
 		return "Manual"
+	default:
+		return ""
+	}
+}
+
+func (ut SpeedUnitType) String() string {
+	switch ut {
+	case KmUnit:
+		return "Km/hr"
+	case MiUnit:
+		return "Mi/hr"
 	default:
 		return ""
 	}
@@ -29,6 +48,7 @@ type CarOptions struct {
 	brand        string
 	color        string
 	maxSpeed     float64
+	maxSpeedType SpeedUnitType
 	transmission TransmissionType
 }
 
@@ -51,7 +71,11 @@ func (c *Car) String() string {
 		values = append(values, val.String())
 	}
 	if val := c.options.maxSpeed; val != 0 {
-		values = append(values, strconv.FormatFloat(val, 'f', 0, 64))
+		values = append(values,
+			strconv.FormatFloat(val, 'f', 0, 64)+
+				" "+
+				c.options.maxSpeedType.String(),
+		)
 	}
 	return strings.Join(values, " ")
 }
@@ -86,9 +110,10 @@ func WithTransmissionType(tt TransmissionType) CarOption {
 	}
 }
 
-func WithMaxSpeed(maxSpeed float64) CarOption {
+func WithMaxSpeed(maxSpeed float64, unitType SpeedUnitType) CarOption {
 	return func(o *CarOptions) {
 		o.maxSpeed = maxSpeed
+		o.maxSpeedType = unitType
 	}
 }
 
@@ -107,7 +132,7 @@ func main() {
 		WithBrand("BMW"),
 		WithColor("Red"),
 		WithTransmissionType(TransmissionAutomatic),
-		WithMaxSpeed(330),
+		WithMaxSpeed(330, KmUnit),
 	)
 	fmt.Println(car)
 }
